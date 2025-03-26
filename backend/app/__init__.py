@@ -2,8 +2,8 @@ from flask import Flask, Response
 from flask_cors import CORS
 from prometheus_client import Counter, generate_latest
 
-# ✅ Déclaré une seule fois ici, au niveau global
 REQUEST_COUNTER = Counter('http_requests_total', 'Total HTTP requests')
+
 
 def create_app():
     app = Flask(__name__)
