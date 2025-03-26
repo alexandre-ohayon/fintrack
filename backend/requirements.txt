@@ -5,3 +5,4 @@ redis==5.0.1
 pytest==8.0.0
 pytest-cov==3.0.0
 prometheus-client==0.20.0
+kafka-python==2.0.2

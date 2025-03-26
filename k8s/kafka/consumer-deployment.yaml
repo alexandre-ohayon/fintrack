@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-consumer
+  template:
+    metadata:
+      labels:
+        app: kafka-consumer
+    spec:
+      containers:
+        - name: kafka-consumer
+          image: fintrack-consumer:latest
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: pdf-storage
+              mountPath: /app/output
+      volumes:
+        - name: pdf-storage
+          persistentVolumeClaim:
+            claimName: pdf-storage
