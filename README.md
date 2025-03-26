@@ -48,6 +48,21 @@ curl -X POST http://localhost:5000/api/report \
   -d '{"name":"Alexandre", "amount":3000}'
 ```
 
+## 📬 Utilisation de l'API (Kubernetes)
+
+> ⚠️ Dans un environnement Kubernetes, récupérez l'URL avec :
+
+```bash
+minikube service backend --url
+```
+
+```bash
+API_URL=$(minikube service backend --url)
+curl -X POST "$$API_URL/api/report" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Alexandre", "amount":3000}'
+  ```
+
 ### Télécharger le PDF :
 [http://localhost:5000/api/report.pdf](http://localhost:5000/api/report.pdf)
 

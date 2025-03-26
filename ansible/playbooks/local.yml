@@ -1,0 +1,34 @@
+---
+- name: Provision FinTrack locally
+  hosts: local
+  become: true
+
+  vars:
+    fintrack_path: /home/{{ ansible_user }}/fintrack
+
+  tasks:
+    - name: 📦 Installer git, docker, docker-compose
+      apt:
+        name:
+          - git
+          - docker.io
+          - docker-compose
+        state: present
+        update_cache: true
+
+    - name: 👤 Ajouter l’utilisateur au groupe docker
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+
+    - name: ⬇️ Cloner le dépôt FinTrack
+      git:
+        repo: https://github.com/alexandre-ohayon/fintrack.git
+        dest: "{{ fintrack_path }}"
+        version: main
+
+    - name: 🐳 Lancer Docker Compose
+      shell: docker-compose up -d
+      args:
+        chdir: "{{ fintrack_path }}/docker"
