@@ -1,4 +1,4 @@
-name: CI/CD Backend Flask
+name: CI/CD - Backend Flask
 
 on:
   push:
@@ -7,37 +7,44 @@ on:
       - '.github/workflows/ci-cd.yml'
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.11
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-    - name: Install dependencies
-      working-directory: backend
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: 📦 Install dependencies
+        working-directory: backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install flake8 pytest
 
-    - name: Lint code
-      working-directory: backend
-      run: |
-        pip install flake8
-        flake8 app
+      - name: ✅ Lint code (flake8)
+        working-directory: backend
+        run: flake8 app
 
-    - name: Test PDF generation
-      working-directory: backend
-      run: |
-        python -c "from app.report_generator import generate_pdf; generate_pdf({'name':'CI Test','amount': 123})"
-        test -f output/report.pdf && echo "PDF generated ✅"
+      - name: 🧪 Run unit tests (pytest)
+        working-directory: backend
+        run: pytest tests
 
-    - name: Run tests
-      working-directory: backend
-      run: |
-        pytest tests
+      - name: 🧾 Test PDF generation manually
+        working-directory: backend
+        run: |
+          python -c "from app.report_generator import generate_pdf; generate_pdf({'name':'CI Test','amount': 123})"
+          test -f output/report.pdf && echo '✅ PDF generated'
+
+      - name: 🐳 Build Docker image
+        run: docker build -t fintrack-backend:latest ./backend
+        
+      - name: 📤 Upload PDF as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-report
+          path: backend/output/report.pdf
