@@ -61,7 +61,7 @@ API_URL=$(minikube service backend --url)
 curl -X POST "$$API_URL/api/report" \
   -H "Content-Type: application/json" \
   -d '{"name":"Alexandre", "amount":3000}'
-  ```
+  ```i
 
 ### Télécharger le PDF :
 [http://localhost:5000/api/report.pdf](http://localhost:5000/api/report.pdf)
@@ -102,3 +102,11 @@ pytest
 - Export vers S3 ou Google Drive  
 - Alertes Prometheus  
 - Intégration avec un front Angular
+
+---
+
+## 🔒 Login Grafana
+URL : http://127.0.0.1:xxxxx (fourni par minikube service)
+
+Login : admin
+Password : admin
