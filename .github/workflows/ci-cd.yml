@@ -32,7 +32,10 @@ jobs:
 
       - name: 🧪 Run unit tests (pytest)
         working-directory: backend
-        run: pytest tests
+        run: |
+          export PYTHONPATH=$(pwd)
+          pytest tests
+      
 
       - name: 🧾 Test PDF generation manually
         working-directory: backend
