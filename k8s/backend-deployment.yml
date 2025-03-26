@@ -19,8 +19,9 @@ spec:
           ports:
             - containerPort: 5000
           volumeMounts:
-            - name: output-volume
+            - name: pdf-storage
               mountPath: /app/output
       volumes:
-        - name: output-volume
-          emptyDir: {}
+        - name: pdf-storage
+          persistentVolumeClaim:
+            claimName: pdf-storage
